@@ -1,2 +1,1 @@
-# OptiDepth
-Accelerated Depth Estimation of Glass and Mirror Surfaces
+# Perform Quantization
