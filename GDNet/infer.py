@@ -48,7 +48,7 @@ to_pil = transforms.ToPILImage()
 
 def gdnet(frame):
     net = GDNet()
-    net.load_state_dict(torch.load("/home/kunal/Downloads/FYP/Mystereos-Spatial-AI/Models/200.pth"))
+    net.load_state_dict(torch.load("/home/kunal/Downloads/FYP/OptiDepth/GDNet/200.pth"))
 
     net.eval()
     with torch.no_grad():

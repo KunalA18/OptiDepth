@@ -58,7 +58,9 @@ class ChannelGate(nn.Module):
         channel_att_sum = None
         for pool_type in self.pool_types:
             if pool_type == 'avg':
-                avg_pool = F.avg_pool2d(x, (x.size(2), x.size(3)), stride=(x.size(2), x.size(3)))
+                size_array = [int(s) for s in x.size()[2:]]
+                # avg_pool = F.avg_pool2d(x, (x.size(2), x.size(3)), stride=(x.size(2), x.size(3)))
+                avg_pool = F.avg_pool2d(x, size_array, stride=size_array)
                 channel_att_raw = self.mlp(avg_pool)
             elif pool_type == 'max':
                 max_pool = F.max_pool2d(x, (x.size(2), x.size(3)), stride=(x.size(2), x.size(3)))
@@ -324,10 +326,10 @@ class GDNet(nn.Module):
 
         # final predict
         final_predict = self.final_predict(final_fusion)
-
+        
         # rescale to original size
         h_predict = F.upsample(h_predict, size=x.size()[2:], mode='bilinear', align_corners=True)
         l_predict = F.upsample(l_predict, size=x.size()[2:], mode='bilinear', align_corners=True)
         final_predict = F.upsample(final_predict, size=x.size()[2:], mode='bilinear', align_corners=True)
-
+        
         return torch.sigmoid(h_predict), torch.sigmoid(l_predict), torch.sigmoid(final_predict)
