@@ -5,17 +5,17 @@ import depthai as dai
 import numpy as np
 import argparse
 import time
-from misc import crf_refine
+# from misc import crf_refine
 
 # --------------- Pipeline ---------------
-NN_WIDTH, NN_HEIGHT = 384, 384
+NN_WIDTH, NN_HEIGHT = 416, 416
 # Start defining a pipeline
 pipeline = dai.Pipeline()
 pipeline.setOpenVINOVersion(version=dai.OpenVINO.VERSION_2022_1)
 
 # Define a neural network
 detection_nn = pipeline.create(dai.node.NeuralNetwork)
-detection_nn.setBlobPath("/home/ayush/fyp/model_m.blob")
+detection_nn.setBlobPath("/home/ayush/OptiDepth/model_gdnet.blob")
 detection_nn.setNumPoolFrames(4)
 detection_nn.input.setBlocking(False)
 detection_nn.setNumInferenceThreads(2)
@@ -65,9 +65,9 @@ with dai.Device(pipeline) as device:
         pred_mask = np.array(in_nn.getFirstLayerFp16()).reshape((NN_HEIGHT, NN_WIDTH))
         pred_mask = (pred_mask*255).astype(np.uint8)
 
-        f_1 = crf_refine(np.array(frame), pred_mask)
+        # f_1 = crf_refine(np.array(frame), pred_mask)
 
-        cv2.imshow("Mask", f_1)
+        cv2.imshow("Mask", pred_mask)
 
         # Calculate FPS
         counter += 1
