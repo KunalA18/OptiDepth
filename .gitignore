@@ -1,3 +1,7 @@
+*.pth
+*.onnx
+*.blob
+
 *.bundle.*
 lib/
 node_modules/

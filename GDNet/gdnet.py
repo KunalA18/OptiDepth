@@ -325,7 +325,7 @@ class GDNet(nn.Module):
         # final predict
         final_predict = self.final_predict(final_fusion)
 
-        # rescale to original size
+        # rescale to original size - nn.functional.upsample is deprecated. Use nn.functional.interpolate instead.
         h_predict = F.upsample(h_predict, size=x.size()[2:], mode='bilinear', align_corners=True)
         l_predict = F.upsample(l_predict, size=x.size()[2:], mode='bilinear', align_corners=True)
         final_predict = F.upsample(final_predict, size=x.size()[2:], mode='bilinear', align_corners=True)
