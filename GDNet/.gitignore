@@ -11,3 +11,4 @@
 *.pth
 *.onnx
 *.blob
+/image/*

@@ -86,10 +86,10 @@ def main():
                 #                                       img_name[:-4] + "_h.png"))
                 # Image.fromarray(f2).save(os.path.join(ckpt_path, exp_name, '%s_%s' % (exp_name, args['snapshot']),
                 #                                       img_name[:-4] + "_l.png"))
-                # Image.fromarray(f3).save(os.path.join(gdd_results_root, '%s_%s' % (exp_name, args['snapshot']),
-                #                                      img_name[:-4] + ".png"))
-                plt.imshow(Image.fromarray(f3))
-                plt.show()
+                Image.fromarray(f3).save(os.path.join(os.path.join(root, 'image'),
+                                                     img_name[:-4] + ".png"))
+                # plt.imshow(Image.fromarray(f3))
+                # plt.show()
             end = time.time()
             print("Average Time Is : {:.2f}".format((end - start) / len(img_list)))
 

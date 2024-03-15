@@ -4,7 +4,7 @@ import time
 import onnxruntime
 import torchvision.transforms as transforms
 from PIL import Image
-from misc import check_mkdir, crf_refine
+from GDNet.misc import check_mkdir, crf_refine
 import matplotlib.pyplot as plt
 from torch.autograd import Variable
 
@@ -16,18 +16,18 @@ def to_numpy(tensor):
     return tensor.detach().cpu().numpy() if tensor.requires_grad else tensor.cpu().numpy()
 
 img_transform = transforms.Compose([
-    transforms.Resize((416, 416)),
+    transforms.Resize((384, 384)),
     transforms.ToTensor(),
     transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
 ])
 
 # Start Session
-ort_session = onnxruntime.InferenceSession("/home/ayush/fyp/model.onnx")
+ort_session = onnxruntime.InferenceSession("/home/ayush/OptiDepth/model_mirrornet.onnx")
 # Model Info
 input_name = ort_session.get_outputs()[0].shape
 print('Input Name:', input_name)
 
-img = Image.open("/home/ayush/fyp/CVPR2020_GDNet/image/glass.jpeg")
+img = Image.open("/home/ayush/OptiDepth/GDNet/image/p6.jpeg")
 resize = transforms.Resize([416, 416])
 w, h = img.size
 # img_ = resize(img)
@@ -36,10 +36,10 @@ img_y = Variable(img_transform(img).unsqueeze(0), requires_grad=False).to("cuda"
 print(to_numpy(img_y))
 ort_inputs = {ort_session.get_inputs()[0].name: to_numpy(img_y)}
 ort_outs = ort_session.run(None, ort_inputs)
-img_out_y = ort_outs[0].squeeze(0)
+img_out_y = ort_outs[3].squeeze(0)
 print(img_out_y)
-f1 = np.array(transforms.Resize((h, w))(to_pil(img_out_y[0])))
-pred_mask = (f1*255).astype(np.uint8)
+f4 = np.array(transforms.Resize((h, w))(to_pil(img_out_y[0])))
+pred_mask = (f4*255).astype(np.uint8)
 f3 = crf_refine(np.array(img), pred_mask)
 # grayImage = cv2.cvtColor(img_out_y[0])
 plt.imshow(Image.fromarray(f3))
