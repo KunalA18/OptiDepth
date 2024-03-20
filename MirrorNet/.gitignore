@@ -13,3 +13,4 @@ CRD_Fusion
 MSD
 ckpt/*
 .ipynb_checkpoints
+input/*
