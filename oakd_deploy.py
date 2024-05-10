@@ -8,14 +8,14 @@ import time
 # from misc import crf_refine
 
 # --------------- Pipeline ---------------
-NN_WIDTH, NN_HEIGHT = 416, 416
+NN_WIDTH, NN_HEIGHT = 384, 384
 # Start defining a pipeline
 pipeline = dai.Pipeline()
 pipeline.setOpenVINOVersion(version=dai.OpenVINO.VERSION_2022_1)
 
 # Define a neural network
 detection_nn = pipeline.create(dai.node.NeuralNetwork)
-detection_nn.setBlobPath("/home/ayush/OptiDepth/model_gdnet.blob")
+detection_nn.setBlobPath("/home/ayush/OptiDepth/model_mirrornet.blob")
 detection_nn.setNumPoolFrames(4)
 detection_nn.input.setBlocking(False)
 detection_nn.setNumInferenceThreads(2)
